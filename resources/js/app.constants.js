@@ -1,0 +1,18 @@
+export const APP_CONSTANTS = {
+  ZERO: '0'
+}
+
+export const POMODORO_COMMANDS = {
+  RESET: 'RESET',
+  START: 'START',
+  PAUSE: 'PAUSE'
+};
+
+export const WORKER_CONSTANTS = {
+  TICK: 'TICK',
+  TIMER: 'TIMER',
+  COMPLETE: 'COMPLETE',
+  PAUSED: 'PAUSED',
+  RESET: 'RESET',
+  SET_DURATION: 'SET_DURATION'
+};
