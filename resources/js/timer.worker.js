@@ -1,3 +1,14 @@
+const WORKER_CONSTANTS = {
+  START: 'START',
+  TICK: 'TICK',
+  TIMER: 'TIMER',
+  COMPLETE: 'COMPLETE',
+  PAUSE: 'PAUSE',
+  PAUSED: 'PAUSED',
+  RESET: 'RESET',
+  SET_DURATION: 'SET_DURATION'
+};
+
 let intervalId = null;
 let isRunning = false;
 let duration = 0;
@@ -12,7 +23,7 @@ function stopTimer() {
 }
 
 function emitTick() {
-  postMessage({ type: 'TICK', remainingMs });
+  postMessage({ type: WORKER_CONSTANTS.TICK, remainingMs });
 }
 
 function startTimer() {
@@ -31,7 +42,7 @@ function startTimer() {
     if (remainingMs <= 0) {
       stopTimer();
       isRunning = false;
-      postMessage({ type: 'COMPLETE', remainingMs: 0 });
+      postMessage({ type: WORKER_CONSTANTS.COMPLETE, remainingMs: 0 });
     }
   }, 100);
 }
@@ -40,32 +51,32 @@ self.onmessage = (event) => {
   const { command, payload } = event.data || {};
 
   switch (command) {
-    case 'SET_DURATION':
+    case WORKER_CONSTANTS.SET_DURATION:
       duration = payload?.duration ?? 0;
       remainingMs = duration;
       stopTimer();
       isRunning = false;
-      postMessage({ type: 'RESET', remainingMs });
+      postMessage({ type: WORKER_CONSTANTS.RESET, remainingMs });
       break;
 
-    case 'START':
+    case WORKER_CONSTANTS.START:
       if (remainingMs <= 0) {
         remainingMs = duration;
       }
       startTimer();
       break;
 
-    case 'PAUSE':
+    case WORKER_CONSTANTS.PAUSE:
       stopTimer();
       isRunning = false;
-      postMessage({ type: 'PAUSED', remainingMs });
+      postMessage({ type: WORKER_CONSTANTS.PAUSED, remainingMs });
       break;
 
-    case 'RESET':
+    case WORKER_CONSTANTS.RESET:
       stopTimer();
       isRunning = false;
       remainingMs = duration;
-      postMessage({ type: 'RESET', remainingMs });
+      postMessage({ type: WORKER_CONSTANTS.RESET, remainingMs });
       break;
   }
 };

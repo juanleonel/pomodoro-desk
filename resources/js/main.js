@@ -1,4 +1,5 @@
-import { PrecisionTimer } from "./precision-timer.js";
+import { APP_CONSTANTS } from './app.constants.js';
+import { PrecisionTimer } from './precision-timer.js';
 
 const DEFAULT_START_TIME = (25 * 60 * 1000);
 const DEFAULT_BREACK_TIME = (5 * 60 * 1000);
@@ -14,13 +15,7 @@ const MODES = {
     POMODORO: 'POMODORO'
 }
 
-let timerMinutes = 0;
-let timerSeconds = 0;
-let intervalId;
-let isSelected = false;
 let mode = 'POMODORO';
-let timerMinutesTemp = null;
-let timerSecondsTemp = null;
 
 const timer = new PrecisionTimer(DEFAULT_START_TIME);
 timer.setSelectorToDisplay('timerDisplay');
@@ -79,55 +74,52 @@ function toggleButtonAsActive(idButton, context) {
     button.classList.toggle('active');
 }
 
-// Al final de main.js o donde inicialices la app
+function initDialogInfo() {
+    document.getElementById('modal-title').textContent = APP_CONSTANTS.APP_NAME;
+    document.getElementById('app-version').textContent = APP_CONSTANTS.VERSION;
+    document.getElementById('app-desc').textContent = APP_CONSTANTS.DESCRIPTION;
+    document.getElementById('app-developer').textContent = APP_CONSTANTS.USER;
+    document.getElementById('app-user').textContent = APP_CONSTANTS.USER;
+    document.getElementById('app-repository').textContent = APP_CONSTANTS.REPOSITORY;
+}
+
 window.addEventListener('beforeunload', () => {
     if (timer) {
         timer.destroy();
     }
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    initDialogInfo();
+    const modal = document.getElementById('about-modal');
+    const openBtn = document.getElementById('btn-open-about');
+    const closeBtns = modal.querySelectorAll('.js-close-modal, .btn-close');
 
-// document.addEventListener('DOMContentLoaded', () => {
-//     const modal = document.getElementById('about-modal');
-//     const openBtn = document.getElementById('btn-open-about'); // Tu botón trigger
-//     const closeBtns = modal.querySelectorAll('.js-close-modal, .btn-close');
+    function openModal() {
+        modal.classList.add('is-visible');
+        modal.setAttribute('aria-hidden', 'false');
+        setTimeout(() => modal.querySelector('.btn-close')?.focus(), 100);
+    }
 
-//     // Abrir modal
-//     function openModal() {
-//         modal.classList.add('is-visible');
-//         modal.setAttribute('aria-hidden', 'false');
-//         // Opcional: enfocar el botón de cerrar para accesibilidad
-//         setTimeout(() => modal.querySelector('.btn-close')?.focus(), 100);
-//     }
+    function closeModal() {
+        modal.classList.remove('is-visible');
+        modal.setAttribute('aria-hidden', 'true');
+        openBtn?.focus();
+    }
 
-//     // Cerrar modal
-//     function closeModal() {
-//         modal.classList.remove('is-visible');
-//         modal.setAttribute('aria-hidden', 'true');
-//         // Devolver foco al botón que lo abrió (mejora UX)
-//         openBtn?.focus();
-//     }
-
-//     // Event Listeners
-//     openBtn?.addEventListener('click', openModal);
-    
-//     closeBtns.forEach(btn => {
-//         btn.addEventListener('click', closeModal);
-//     });
-
-//     // Cerrar al hacer clic en el fondo oscuro
-//     modal.addEventListener('click', (e) => {
-//         if (e.target === modal) closeModal();
-//     });
-
-//     // Cerrar con tecla Escape
-//     document.addEventListener('keydown', (e) => {
-//         if (e.key === 'Escape' && modal.classList.contains('is-visible')) {
-//             closeModal();
-//         }
-//     });
-// });
-
+    openBtn?.addEventListener('click', openModal);
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', closeModal);
+    });
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('is-visible')) {
+            closeModal();
+        }
+    });
+});
 
 window.resetTimer = resetTimer;
 window.setAsBreak = setAsBreak;

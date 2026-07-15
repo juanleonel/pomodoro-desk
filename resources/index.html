@@ -30,12 +30,12 @@
                 <button class="btn-close" aria-label="Cerrar">&times;</button>
             </div>
             <div class="modal-body">
-                <p class="app-version">v1.0.0</p>
-                <p class="app-desc">Temporizador Pomodoro diseñado para la concentración profunda.</p>
+                <p id="app-version" class="app-version">v1.0.0</p>
+                <p id="app-desc" class="app-desc">Temporizador Pomodoro diseñado para la concentración profunda.</p>
                 <div class="dev-info">
-                    <span class="label">Desarrollado por</span>
-                    <span class="name">Tu Nombre</span>
-                    <a href="#" class="link">github.com/tuusuario</a>
+                    <span id="app-developer" class="label">Desarrollado por</span>
+                    <span id="app-user" class="name">Nombre</span>
+                    <a href="#" id="app-repository" class="link">github.com</a>
                 </div>
             </div>
             <div class="modal-footer">
@@ -45,6 +45,7 @@
     </div>
 
     <script src="/js/neutralino.js"></script>
+    <script type="module" src="/js/app.constants.js"></script>
     <script type="module" src="/js/main.js"></script>
   </body>
 </html>
