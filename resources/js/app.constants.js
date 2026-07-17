@@ -1,5 +1,5 @@
 export const APP_CONSTANTS = {
-  APP_NAME: 'Pomodoro',
+  APP_NAME: 'Tempo',
   USER: 'Juan L. Albores',
   VERSION: '1.0.0',
   REPOSITORY: 'https://github.com/juanleonel',

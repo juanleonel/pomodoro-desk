@@ -78,7 +78,7 @@ function initDialogInfo() {
     document.getElementById('modal-title').textContent = APP_CONSTANTS.APP_NAME;
     document.getElementById('app-version').textContent = APP_CONSTANTS.VERSION;
     document.getElementById('app-desc').textContent = APP_CONSTANTS.DESCRIPTION;
-    document.getElementById('app-developer').textContent = APP_CONSTANTS.USER;
+    document.getElementById('app-developer').textContent = 'Desarrollado por';
     document.getElementById('app-user').textContent = APP_CONSTANTS.USER;
     document.getElementById('app-repository').textContent = APP_CONSTANTS.REPOSITORY;
 }

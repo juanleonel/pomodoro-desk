@@ -133,7 +133,7 @@ body {
 }
 
 .modal-content {
-    background-color: #FFFFFF;
+    background-color: #F6F5F4;
     border-radius: 8px;
     width: 90%;
     max-width: 380px;
@@ -163,3 +163,9 @@ body {
 .modal-footer { display: flex; justify-content: flex-end; }
 .btn-primary { background-color: #2C2C2C; color: #FFFFFF; border: none; padding: 10px 24px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background-color 0.2s; }
 /* .btn-primary:hover { background-color: #1A1A1A; } */
+
+.img {
+    width: 130px;
+    display: block;
+    margin: 0 auto;
+}
