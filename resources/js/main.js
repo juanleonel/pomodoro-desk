@@ -1,7 +1,7 @@
 import { APP_CONSTANTS } from './app.constants.js';
 import { PrecisionTimer } from './precision-timer.js';
 
-const DEFAULT_START_TIME = (25 * 60 * 1000);
+const DEFAULT_START_TIME = (2 * 60 * 1000);
 const DEFAULT_BREACK_TIME = (5 * 60 * 1000);
 const POMODORO_TIME_OUT = 1000;
 const COLON = ':';

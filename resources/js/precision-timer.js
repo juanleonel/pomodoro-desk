@@ -1,4 +1,5 @@
-import { POMODORO_COMMANDS, WORKER_CONSTANTS } from './app.constants.js'
+import { APP_CONSTANTS, MESSAGES, MESSAGES_LOGS, POMODORO_COMMANDS, WORKER_CONSTANTS }
+  from './app.constants.js'
 
 export class PrecisionTimer {
   constructor(durationMs) {
@@ -9,7 +10,9 @@ export class PrecisionTimer {
     this.duration = durationMs;
     this.worker = new Worker(new URL('./timer.worker.js', import.meta.url));
     this.isRunning = false;
-
+    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    this.soundBuffer = null;
+    this._loadSound();
     this.worker.onmessage = (event) => {
       const { type, remainingMs } = event.data;
 
@@ -34,6 +37,16 @@ export class PrecisionTimer {
     this._updateDuration(durationMs)
   }
 
+  async _loadSound() {
+    try {
+      const response = await fetch(APP_CONSTANTS.AUDIO_PATH);
+      const arrayBuffer = await response.arrayBuffer();
+      this.soundBuffer = await this.audioCtx.decodeAudioData(arrayBuffer);
+    } catch (e) {
+      console.error('No se pudo cargar el sonido:', e);
+    }
+  }
+
   setDuration(durationMs) {
     this.duration = durationMs;
     this._updateDuration(durationMs);
@@ -44,6 +57,10 @@ export class PrecisionTimer {
   }
 
   start() {
+    if (this.audioCtx.state === APP_CONSTANTS.SUSPEND) {
+      this.audioCtx.resume();
+    }
+
     if (this.isRunning) {
       return;
     }
@@ -84,9 +101,23 @@ export class PrecisionTimer {
 
   _onComplete() {
     if (window.neu?.os) {
-      window.neu.os.showNotification('Tiempo terminado!', 'Sesión Pomodoro completada.');
+      window.neu.os.showNotification(MESSAGES.NOTIFICATION_TITLE, MESSAGES.NOTIFICATION_MESSAGE);
+    } else if (!window.Neutralino?.os) {
+        console.warn('API de OS no disponible');
+
+        return;
     }
-    console.log('temporizador finalizado');
+    Neutralino.os.showNotification(MESSAGES.NOTIFICATION_TITLE, MESSAGES.NOTIFICATION_MESSAGE);
+
+   if (this.soundBuffer) {
+      const source = this.audioCtx.createBufferSource();
+      source.buffer = this.soundBuffer;
+      source.connect(this.audioCtx.destination);
+      source.start(0);
+    } else {
+      console.warn(MESSAGES_LOGS.BUFFER_NOT_LOAD);
+    }
+    console.log(MESSAGES_LOGS.FINISHED);
   }
 
   _updateDuration(durationMs) {
