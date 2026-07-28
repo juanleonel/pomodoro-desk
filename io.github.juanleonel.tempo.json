@@ -1,0 +1,46 @@
+{
+   "app-id": "io.github.juanleonel.tempo",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "45",
+    "sdk": "org.gnome.Sdk",
+    "command": "/app/bin/tempoapp",
+    "finish-args": [
+        "--share=network",
+        "--share=ipc",
+        "--socket=x11",
+        "--socket=wayland",
+        "--device=dri",
+        "--socket=session-bus",
+        "--talk-name=org.freedesktop.Notifications",
+        "--talk-name=org.freedesktop.portal.Desktop",
+        "--filesystem=home",
+        "--filesystem=xdg-run/tempoapp:create",
+        "--env=WEBKIT_DISABLE_DMABUF_RENDERER=1",
+        "--env=NO_AT_BRIDGE=1"
+    ],
+    "modules": [
+        {
+            "name": "tempoapp",
+            "buildsystem": "simple",
+            "build-commands": [
+                "install -D tempoapp-linux_x64 /app/bin/tempoapp",
+                "install -D resources.neu /app/bin/resources.neu",
+                "mkdir -p /app/bin/.tmp",
+                "chmod 777 /app/bin/.tmp",
+                "chmod +x /app/bin/tempoapp"
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "path": "build/tempoapp-linux_x64",
+                    "dest": "."
+                },
+                {
+                    "type": "file",
+                    "path": "build/resources.neu",
+                    "dest": "."
+                }
+            ]
+        }
+    ]
+}
